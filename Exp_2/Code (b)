@@ -1,0 +1,20 @@
+import pandas as pd
+import requests
+from io import StringIO
+
+url = "https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/131.0.0.0 Safari/537.36"
+}
+
+response = requests.get(url, headers=headers)
+
+print("Status Code:", response.status_code)
+if response.status_code == 200:
+    tables = pd.read_html(StringIO(response.text))
+    print("Number of tables:", len(tables))
+    df_web = tables[0]
+    print(df_web.head())
